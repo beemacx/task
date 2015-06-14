@@ -1,0 +1,107 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="task.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpControls="clr-namespace:WPControls;assembly=WPControls"
+    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False" mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480">
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <!--Pivot Control-->
+        <controls:Pivot Title="MY LIST" Background="#24a9e1" FontSize="28"> <!--Untuk memberi judul-->
+            <!--header task, page untuk Task-->
+            <controls:PivotItem Header="Task" Margin="0,0,0,0">
+                <!--Stackpanel agar item berurutan kebawah, tidak menumpuk-->
+                <StackPanel Background="White" Orientation="Vertical">
+                    <!--Listox, tempat item tampil-->
+                    <ListBox x:Name="MainLisbox" HorizontalAlignment="Left" VerticalAlignment="Top" Height="580" Width="444">
+                            <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <!--toolkit untuk menampilkan edit dan hapus ketika ditahan itemnya-->
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu IsZoomEnabled="False">
+                                            <toolkit:MenuItem x:Name="hapus" Header="hapus" Click="hapus_click"/>
+                                        <!--Nama dan event nya-->
+                                            <toolkit:MenuItem x:Name="edit" Header="edit" Click="edit_click"/>
+                                        </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                                <StackPanel Orientation="Horizontal">
+                                            <StackPanel Orientation="Vertical" Margin="20,30,0,0">
+                                                <!--Untuk binding title, waktu, dan prioritas yang telah dibuat 
+                                                sehingga keluar semuanya yang ada di localdatabase-->
+                                            <TextBlock FontSize="35" HorizontalAlignment="Left" Width="320"
+                                                       Text="{Binding title}" Foreground="#24a9e1"/>
+                                            <TextBlock FontSize="20" HorizontalAlignment="Left"
+                                                       Text="{Binding waktu}" Foreground="Gray"/>
+                                        </StackPanel>
+                                        <TextBlock HorizontalAlignment="Right" FontSize="20" Text="{Binding priority}" 
+                                                   Margin="30,20,0,0" Foreground="#24a9e1"/>
+                                </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                
+            </controls:PivotItem>
+ 
+            <!--Page countdown-->
+            <!--header-->
+            <controls:PivotItem Header="Countdown" Background="White" Margin="0,0,0,0" >
+                <StackPanel>
+                    <!--Untuk memampilkan tanggal & jam sekarang-->
+                    <TextBlock Name="tgl" Foreground="#24a9e1" Margin="12,10,0,0" />
+                <ListBox x:Name="MainLis" HorizontalAlignment="Left" VerticalAlignment="Top" Height="580" Width="444">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Background="White">
+                                <!--Binding title dan countdown-->
+                                <TextBlock HorizontalAlignment="Left" FontSize="35" Width="300"
+                                           Text="{Binding title}" Margin="10,30,0,0" Foreground="#24a9e1"/>
+                                <TextBlock HorizontalAlignment="Left" FontSize="25"
+                                           Text="{Binding tgl}" Margin="50,30,0,0" Foreground="#24a9e1"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                </StackPanel>
+            </controls:PivotItem>
+            <!--Calendar-->
+            <controls:PivotItem Header="Calendar" Margin="0,0,0,0" Background="Black">
+                <wpControls:Calendar 
+                    x:Name="Cal"
+                    MonthChanged="Cal_MonthChanged"
+                    MonthChanging="Cal_MonthChanging"
+                    SelectionChanged="Cal_SelectionChanged"
+                    EnableGestures="True"
+                />
+            </controls:PivotItem>
+            
+        </controls:Pivot>
+    </Grid>
+ 
+    <!--ApplicationBar, untuk menu yang ada di bawah-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <!--Untuk menampilkan gambar tambah dan event nya-->
+            <shell:ApplicationBarIconButton IconUri="/gambar/add.png" Text="new" Click="New"/>
+            <shell:ApplicationBar.MenuItems>
+                <!--ke halaman settings dan about-->
+                <shell:ApplicationBarMenuItem Text="settings" Click="set_Click"/>
+                <shell:ApplicationBarMenuItem Text="about" Click="about_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
